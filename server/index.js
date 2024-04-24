@@ -1,26 +1,37 @@
-import { User } from './models/User.js';
-import { Order } from './models/Order.js';
-import { Product } from './models/product.js';
 import express  from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
+import dotenv from 'dotenv';
+import cookieParser from "cookie-parser";
+
+dotenv.config({path: './config.env'});
 
 const app = express();
-app.use(bodyParser.urlencoded({extended:false}));
 app.use(cors());
-app.use(bodyParser.json());
 app.use(express.json());
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json()); 
+app.use(cookieParser());
 
-mongoose.connect("mongodb+srv://shrut2210:plantecom@cluster0.cr6gpjk.mongodb.net/").then()
-{
-    console.log("connect to db");
-}
+import './db/connection.js'
 
-app.get("/", async (req,res)=>{
-    const data = await User.find();
-    res.send(data);
-});
-app.listen(8000,()=>{
-    console.log("running on 8000");
+import productRouter from './router/productRouter.js' 
+app.use('/products', productRouter); 
+
+import userRouter from './router/userRouter.js'
+app.use('/user', userRouter);
+
+import cartRouter from './router/cartRouter.js'
+app.use('/cart', cartRouter);
+
+import orderRouter from './router/orderRouter.js'
+app.use('/order',orderRouter);
+
+app.get("/", async (req,res) => {
+    res.send("data");
+})
+
+app.listen(process.env.PORT,()=>{
+    console.log("running on port");
 });

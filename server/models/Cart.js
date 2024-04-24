@@ -1,8 +1,7 @@
-// const mongoose = require('mongoose');
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const orderSchema = mongoose.Schema(
+const cartSchema = mongoose.Schema(
     {
       email: {
         type: String,
@@ -37,18 +36,10 @@ const orderSchema = mongoose.Schema(
           },
           category: {
             type: String,
+            ref: "Category",
           },
-          qty: {
-            type: String,
-            required: true,
-            default: 0,
-          }
         }
       ],
-      address : {
-        type: String,
-        // required: true,
-      },
       totalCost: {
         type: Number,
         required: true,
@@ -62,4 +53,4 @@ const orderSchema = mongoose.Schema(
     }
 )
 
-export const Order = mongoose.model('Order', orderSchema);
+export const Cart = mongoose.model('Cart', cartSchema);
